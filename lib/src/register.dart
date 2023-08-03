@@ -81,7 +81,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
           content: Text('Please enter $alertFieldName!'),
           actions: <Widget>[
             TextButton(
-              child: Text('Ok'),
+              child: const Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -120,10 +120,10 @@ class _MyRegisterWidget extends State<RegisterWidget>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("GEMS Account"),
+          title: const Text("GEMS Account"),
         ),
         body: Align(
-            alignment: Alignment(0, 0),
+            alignment: const Alignment(0, 0),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -136,14 +136,14 @@ class _MyRegisterWidget extends State<RegisterWidget>
                         child: Center(
                             child: Text(
                           'Register Status: ${EnumHelper.getName(_registerState.state)}',
-                          style: TextStyle(fontSize: 18, color: Colors.black54),
+                          style: const TextStyle(fontSize: 18, color: Colors.black54),
                         )),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(48.0, 18.0, 48.0, 0),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(48.0, 18.0, 48.0, 0),
                         child: Align(
-                          child: Text('WebSocket:'),
                           alignment: Alignment.centerLeft,
+                          child: Text('WebSocket:'),
                         ),
                       ),
                       Padding(
@@ -152,7 +152,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                           controller: _wsUriController,
                           keyboardType: TextInputType.text,
                           textAlign: TextAlign.center,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             contentPadding: EdgeInsets.all(10.0),
                             border: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black12)),
@@ -163,11 +163,11 @@ class _MyRegisterWidget extends State<RegisterWidget>
                   ),
                   Column(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(46.0, 18.0, 48.0, 0),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(46.0, 18.0, 48.0, 0),
                         child: Align(
-                          child: Text('SIP URI:'),
                           alignment: Alignment.centerLeft,
+                          child: Text('SIP URI:'),
                         ),
                       ),
                       Padding(
@@ -176,7 +176,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                           controller: _sipUriController,
                           keyboardType: TextInputType.text,
                           textAlign: TextAlign.center,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             contentPadding: EdgeInsets.all(10.0),
                             border: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black12)),
@@ -187,11 +187,11 @@ class _MyRegisterWidget extends State<RegisterWidget>
                   ),
                   Column(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(46.0, 18.0, 48.0, 0),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(46.0, 18.0, 48.0, 0),
                         child: Align(
-                          child: Text('Authorization User:'),
                           alignment: Alignment.centerLeft,
+                          child: Text('Authorization User:'),
                         ),
                       ),
                       Padding(
@@ -201,8 +201,8 @@ class _MyRegisterWidget extends State<RegisterWidget>
                           keyboardType: TextInputType.text,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(10.0),
-                            border: UnderlineInputBorder(
+                            contentPadding: const EdgeInsets.all(10.0),
+                            border: const UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black12)),
                             hintText: _authorizationUserController.text.isEmpty
                                 ? '[Empty]'
@@ -214,11 +214,11 @@ class _MyRegisterWidget extends State<RegisterWidget>
                   ),
                   Column(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(46.0, 18.0, 48.0, 0),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(46.0, 18.0, 48.0, 0),
                         child: Align(
-                          child: Text('Password:'),
                           alignment: Alignment.centerLeft,
+                          child: Text('Password:'),
                         ),
                       ),
                       Padding(
@@ -228,8 +228,8 @@ class _MyRegisterWidget extends State<RegisterWidget>
                           keyboardType: TextInputType.text,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(10.0),
-                            border: UnderlineInputBorder(
+                            contentPadding: const EdgeInsets.all(10.0),
+                            border: const UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black12)),
                             hintText: _passwordController.text.isEmpty
                                 ? '[Empty]'
@@ -241,11 +241,11 @@ class _MyRegisterWidget extends State<RegisterWidget>
                   ),
                   Column(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(46.0, 18.0, 48.0, 0),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(46.0, 18.0, 48.0, 0),
                         child: Align(
-                          child: Text('Display Name:'),
                           alignment: Alignment.centerLeft,
+                          child: Text('Display Name:'),
                         ),
                       ),
                       Padding(
@@ -254,7 +254,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                           controller: _displayNameController,
                           keyboardType: TextInputType.text,
                           textAlign: TextAlign.center,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             contentPadding: EdgeInsets.all(10.0),
                             border: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black12)),
@@ -269,14 +269,14 @@ class _MyRegisterWidget extends State<RegisterWidget>
                         height: 48.0,
                         width: 160.0,
                         child: MaterialButton(
-                          child: Text(
+                          color: Colors.red,
+                          textColor: Colors.white,
+                          onPressed: () => _handleSave(context),
+                          child: const Text(
                             'Register',
                             style:
                                 TextStyle(fontSize: 16.0, color: Colors.white),
                           ),
-                          color: Colors.blue,
-                          textColor: Colors.white,
-                          onPressed: () => _handleSave(context),
                         ),
                       ))
                 ])));
