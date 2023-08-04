@@ -70,6 +70,10 @@ class _MyRegisterWidget extends State<RegisterWidget>
   void registrationStateChanged(RegistrationState state) {
     setState(() {
       _registerState = state;
+      if(EnumHelper.getName(_registerState.state) == "Registered"){
+        Navigator.pop(context);
+      }
+
     });
   }
 
@@ -100,6 +104,15 @@ class _MyRegisterWidget extends State<RegisterWidget>
     } else if (_sipUriController.text == '') {
       _alert(context, "SIP URI");
     }
+
+/*    else if (EnumHelper.getName(_registerState.state) == "Registered"){
+
+
+      Navigator.pop(context);
+
+    }
+
+ */
 
 
     UaSettings settings = UaSettings();
@@ -305,4 +318,5 @@ class _MyRegisterWidget extends State<RegisterWidget>
   void onNewNotify(Notify ntf) {
     // NO OP
   }
+
 }
