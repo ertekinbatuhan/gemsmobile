@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gemsmobile/main.dart';
+import 'package:gemsmobile/src/callscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sip_ua/sip_ua.dart';
 
@@ -98,6 +100,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
     } else if (_sipUriController.text == '') {
       _alert(context, "SIP URI");
     }
+
 
     UaSettings settings = UaSettings();
 
