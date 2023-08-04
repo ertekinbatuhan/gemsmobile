@@ -6,6 +6,7 @@ class AboutWidget extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text("About"),
+          backgroundColor:Color(0xFFe4002b) ,
         ),
         body: SingleChildScrollView(
           child: Padding(

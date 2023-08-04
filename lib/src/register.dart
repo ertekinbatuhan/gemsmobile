@@ -121,6 +121,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
     return Scaffold(
         appBar: AppBar(
           title: const Text("GEMS Account"),
+          backgroundColor: Color(0xFFe4002b),
         ),
         body: SingleChildScrollView(
             child: Column(
