@@ -209,7 +209,9 @@ class _MyDialPadWidget extends State<DialPadWidget>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Leonardo SIP UA "),
+          //burası app bar yeri
+          backgroundColor: Colors.red,
+          title: Text("LEONARDO GEMS CLIENT "),
           actions: <Widget>[
             PopupMenuButton<String>(
                 onSelected: (String value) {

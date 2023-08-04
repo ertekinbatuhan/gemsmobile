@@ -14,7 +14,7 @@ class AboutWidget extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Text(
-                      'Leonardo GEMS Client v1.0.0')
+                      'Leonardo GEMS Client Mobile v1.0.0')
                 ],
               ),
             ),

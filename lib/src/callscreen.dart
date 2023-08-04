@@ -368,7 +368,8 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
       title: "hangup",
       onPressed: () => _handleHangup(),
       icon: Icons.call_end,
-      fillColor: Colors.red,
+      fillColor: Colors.red
+      //Color(0xE4002B),
     );
 
     var hangupBtnInactive = ActionButton(
@@ -571,6 +572,7 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
             title: Text('[$direction] ${EnumHelper.getName(_state)}')),
         body: Container(
           child: _buildContent(),
+
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Padding(

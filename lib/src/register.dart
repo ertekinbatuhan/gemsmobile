@@ -122,8 +122,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
         appBar: AppBar(
           title: const Text("GEMS Account"),
         ),
-        body: Align(
-            alignment: const Alignment(0, 0),
+        body: SingleChildScrollView(
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
