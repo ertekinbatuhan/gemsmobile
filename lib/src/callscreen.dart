@@ -368,7 +368,7 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
       title: "hangup",
       onPressed: () => _handleHangup(),
       icon: Icons.call_end,
-      fillColor: Colors.red
+      fillColor: Color(0xFFe4002b),
       //Color(0xE4002B),
     );
 
@@ -376,7 +376,7 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
       title: "hangup",
       onPressed: () {},
       icon: Icons.call_end,
-      fillColor: Colors.grey,
+      fillColor: Color(0xFFe4002b),
     );
 
     var basicActions = <Widget>[];
@@ -405,6 +405,8 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
             icon: _audioMuted ? Icons.mic_off : Icons.mic,
             checked: _audioMuted,
             onPressed: () => _muteAudio(),
+            fillColor: Color(0xFFe4002b),
+
           ));
 
           if (voiceOnly) {
@@ -412,12 +414,14 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
               title: "keypad",
               icon: Icons.dialpad,
               onPressed: () => _handleKeyPad(),
+              fillColor: Color(0xFFe4002b),
             ));
           } else {
             advanceActions.add(ActionButton(
               title: "switch camera",
               icon: Icons.switch_video,
               onPressed: () => _switchCamera(),
+              fillColor: Color(0xFFe4002b),
             ));
           }
 
@@ -427,12 +431,15 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
               icon: _speakerOn ? Icons.volume_off : Icons.volume_up,
               checked: _speakerOn,
               onPressed: () => _toggleSpeaker(),
+              fillColor: Color(0xFFe4002b),
             ));
           } else {
             advanceActions.add(ActionButton(
               title: _videoMuted ? "camera on" : 'camera off',
               icon: _videoMuted ? Icons.videocam : Icons.videocam_off,
               checked: _videoMuted,
+              fillColor: Color(0xFFe4002b),
+
               onPressed: () => _muteVideo(),
             ));
           }
@@ -442,6 +449,7 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
             icon: _hold ? Icons.play_arrow : Icons.pause,
             checked: _hold,
             onPressed: () => _handleHold(),
+            fillColor: Color(0xFFe4002b),
           ));
 
           basicActions.add(hangupBtn);
@@ -451,12 +459,14 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
               title: "back",
               icon: Icons.keyboard_arrow_down,
               onPressed: () => _handleKeyPad(),
+              fillColor: Color(0xFFe4002b),
             ));
           } else {
             basicActions.add(ActionButton(
               title: "transfer",
               icon: Icons.phone_forwarded,
               onPressed: () => _handleTransfer(),
+              fillColor: Color(0xFFe4002b),
             ));
           }
         }

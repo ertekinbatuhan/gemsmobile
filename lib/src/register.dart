@@ -267,9 +267,12 @@ class _MyRegisterWidget extends State<RegisterWidget>
                       padding: const EdgeInsets.fromLTRB(0.0, 18.0, 0.0, 0.0),
                       child: Container(
                         height: 48.0,
-                        width: 160.0,
+                        width: 200.0,
                         child: MaterialButton(
-                          color: Colors.red,
+                          color: Color(0xFFe4002b),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
                           textColor: Colors.white,
                           onPressed: () => _handleSave(context),
                           child: const Text(

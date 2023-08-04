@@ -189,16 +189,18 @@ class _MyDialPadWidget extends State<DialPadWidget>
                   ActionButton(
                     icon: Icons.videocam,
                     onPressed: () => _handleCall(context),
+                    fillColor: Color(0xFFe4002b),
                   ),
                   ActionButton(
                     icon: Icons.dialer_sip,
-                    fillColor: Colors.green,
-                    onPressed: () => _handleCall(context, true),
+                    fillColor: Color(0xFF5a5acaf),
+                    onPressed: () => _handleCall(context, true)
                   ),
                   ActionButton(
                     icon: Icons.keyboard_arrow_left,
                     onPressed: () => _handleBackSpace(),
                     onLongPress: () => _handleBackSpace(true),
+                    fillColor: Color(0xFFe4002b),
                   ),
                 ],
               )))
