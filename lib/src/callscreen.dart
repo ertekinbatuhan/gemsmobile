@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +25,15 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
   EdgeInsetsGeometry? _localVideoMargin;
   MediaStream? _localStream;
   MediaStream? _remoteStream;
+  bool isButtonPressed = false ;
+
 
   bool _showNumPad = false;
   String _timeLabel = '00:00';
   late Timer _timer;
   bool _audioMuted = false;
+  bool _pttMuted = false ;
+
   bool _videoMuted = false;
   bool _speakerOn = false;
   bool _hold = false;
@@ -42,9 +47,26 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
 
   String? get remoteIdentity => call!.remote_identity;
 
+
+  bool isButtonColor = false;
+  Color buttonColor = Color(0xFFe4002b); // Başlangıç rengi
+
+
+
+
+
+
+
+
+
+
+
+
   String get direction => call!.direction;
 
   Call? get call => widget._call;
+
+
 
   @override
   initState() {
@@ -248,6 +270,16 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     }
   }
 
+  void _pttMute() {
+    if (_pttMuted) {
+      call!.unmute(true, false);
+    } else {
+      call!.mute(true, false);
+    }
+  }
+
+
+
   void _muteVideo() {
     if (_videoMuted) {
       call!.unmute(false, true);
@@ -363,6 +395,8 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
         .toList();
   }
 
+
+
   Widget _buildActionButtons() {
     var hangupBtn = ActionButton(
       title: "hangup",
@@ -400,21 +434,61 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
       case CallStateEnum.ACCEPTED:
       case CallStateEnum.CONFIRMED:
         {
-          advanceActions.add(ActionButton(
-            title: _audioMuted ? 'unmute' : 'mute',
-            icon: _audioMuted ? Icons.mic_off : Icons.mic,
-            checked: _audioMuted,
-            onPressed: () => _muteAudio(),
-            fillColor: Color(0xFFe4002b),
 
+
+          advanceActions.add(GestureDetector(
+
+             onLongPress: () {
+                setState(() {
+          isButtonColor = true ;
+          buttonColor = Colors.green ;
+
+
+          _pttMute();
+
+
+
+        });
+
+
+        },
+
+        onLongPressEnd: (_) {
+               setState(() {
+                 isButtonColor = false ;
+                 buttonColor = Color(0xFFe4002b) ;
+
+               });
+        },
+
+            child: ActionButton(
+
+
+              title: "ptt",
+              icon: Icons.mic_none ,
+             // int.parse(remoteIdentity!) >= 9000  ?  Icons.mic_none : Icons.mic_off ,
+              checked: _pttMuted,
+             // onPressed: int.parse(remoteIdentity!) >= 9000  ? _pttMute : null ,
+
+
+
+
+
+              fillColor: buttonColor
+       // int.parse(remoteIdentity!) >= 9000 ?  Color(0xFFe4002b) : Color(0xFF5a5acaf)
+
+            ),
           ));
 
+
           if (voiceOnly) {
-            advanceActions.add(ActionButton(
-              title: "keypad",
-              icon: Icons.dialpad,
-              onPressed: () => _handleKeyPad(),
-              fillColor: Color(0xFFe4002b),
+            advanceActions.add(SizedBox(
+              child: ActionButton(
+                title: "keypad",
+                icon: Icons.dialpad,
+                onPressed: () => _handleKeyPad(),
+                fillColor: Color(0xFFe4002b),
+              ),
             ));
           } else {
             advanceActions.add(ActionButton(
@@ -424,6 +498,18 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
               fillColor: Color(0xFFe4002b),
             ));
           }
+          advanceActions.add(SizedBox(
+            width: 60,
+            child: ActionButton(
+              title: _audioMuted ? 'unmute' : 'mute',
+              icon: _audioMuted ? Icons.mic_off : Icons.mic,
+              checked: _audioMuted,
+              onPressed: () => _muteAudio(),
+              fillColor: Color(0xFFe4002b),
+
+            ),
+          ));
+
 
           if (voiceOnly) {
             advanceActions.add(ActionButton(
@@ -463,12 +549,14 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
             ));
           } else {
             basicActions.add(ActionButton(
+
               title: "transfer",
               icon: Icons.phone_forwarded,
               onPressed: () => _handleTransfer(),
               fillColor: Color(0xFFe4002b),
             ));
           }
+
         }
         break;
       case CallStateEnum.FAILED:
@@ -489,18 +577,19 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
       actionWidgets.addAll(_buildNumPad());
     } else {
       if (advanceActions.isNotEmpty) {
-        actionWidgets.add(Padding(
-            padding: const EdgeInsets.all(3),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: advanceActions)));
+        actionWidgets.add(FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: advanceActions),
+        ));
       }
     }
 
     actionWidgets.add(Padding(
-        padding: const EdgeInsets.all(3),
+        padding: const EdgeInsets.all(1),
         child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly  ,
             children: basicActions)));
 
     return Column(
