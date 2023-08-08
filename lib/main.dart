@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
   static const MaterialColor primarySwatch = MaterialColor(
     0xFFe4002b,
     <int, Color>{
-      // Sakın dokunmayın
       50: Color(0xFFFFEBEE),
       100: Color(0xFFFFCDD2),
       200: Color(0xFFEF9A9A),

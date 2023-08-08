@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sip_ua/sip_ua.dart';
 
 import 'widgets/action_button.dart';
@@ -11,6 +12,8 @@ import 'widgets/action_button.dart';
 class CallScreenWidget extends StatefulWidget {
   final SIPUAHelper? _helper;
   final Call? _call;
+
+
   CallScreenWidget(this._helper, this._call, {Key? key}) : super(key: key);
   @override
   _MyCallScreenWidget createState() => _MyCallScreenWidget();
@@ -26,7 +29,22 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
   MediaStream? _localStream;
   MediaStream? _remoteStream;
   bool isButtonPressed = false ;
+  late SharedPreferences _preferences;
+  
+ String? testData ;
 
+  void loadShared()  async {
+    _preferences =  await  SharedPreferences.getInstance()  ;
+     testData = _preferences.getString('auth_user') ;
+    if(int.parse( remoteIdentity!) >= 9000 || int.parse(testData!) >= 9000) {
+      _pttClose() ;
+
+
+
+    }
+   print(testData) ;
+
+  }
 
   bool _showNumPad = false;
   String _timeLabel = '00:00';
@@ -56,14 +74,16 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
   Call? get call => widget._call;
 
 
-
   @override
   initState() {
     super.initState();
     _initRenderers();
     helper!.addSipUaHelperListener(this);
     _startTimer();
+    loadShared() ;
+    //_pttClose() ;
   }
+
 
   @override
   deactivate() {
@@ -320,7 +340,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     call!.sendDTMF(tone);
   }
 
-
   void _pttOpen() {
 
     isButtonColor = true ;
@@ -337,7 +356,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     call!.mute(true,false);
 
   }
-
 
   void _handleKeyPad() {
     setState(() {
@@ -394,7 +412,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
         .toList();
   }
 
-
   Widget _buildActionButtons() {
     var hangupBtn = ActionButton(
       title: "hangup",
@@ -436,13 +453,15 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
 
           advanceActions.add(GestureDetector(
              onLongPress: () {
-               if(int.parse(remoteIdentity!) >= 9000) {
-                 _pttOpen() ;
+
+               if(int.parse(remoteIdentity!) >= 9000 || int.parse(testData!) >= 9000 ){
+                 _pttOpen();
                }
 
         },
         onLongPressEnd: (_) {
-               if(int.parse(remoteIdentity!) >= 9000) {
+
+               if(int.parse(remoteIdentity!) >= 9000 || int.parse(testData!) >= 9000 ) {
                  _pttClose() ;
                }
         },
@@ -450,7 +469,8 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
               title: "ptt",
               icon: Icons.mic_none ,
               checked: _pttMuted,
-              fillColor: int.parse(remoteIdentity!)  >=9000 ? buttonColor : Color(0xFF5a5acaf)
+
+              fillColor: int.parse(remoteIdentity!)  >=9000  || int.parse(testData!) >= 9000 ? buttonColor : Color(0xFF5a5acaf)
             ),
           ));
 
@@ -460,7 +480,17 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
               child: ActionButton(
                 title: "keypad",
                 icon: Icons.dialpad,
-                onPressed: () => _handleKeyPad(),
+                onPressed: () {
+
+
+
+                  _handleKeyPad();
+                  loadShared() ;
+
+        },
+
+
+              //  => _handleKeyPad(),
                 fillColor: Color(0xFFe4002b),
               ),
             ));
@@ -473,6 +503,7 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
             ));
           }
           advanceActions.add(SizedBox(
+
             width: 60,
             child: ActionButton(
               title: _audioMuted ? 'unmute' : 'mute',
