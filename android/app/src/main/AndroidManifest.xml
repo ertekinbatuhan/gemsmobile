@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <application
-        android:label="gemsmobile"
+        android:label="GEMS Client"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
