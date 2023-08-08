@@ -51,17 +51,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
   bool isButtonColor = false;
   Color buttonColor = Color(0xFFe4002b); // Başlangıç rengi
 
-
-
-
-
-
-
-
-
-
-
-
   String get direction => call!.direction;
 
   Call? get call => widget._call;
@@ -270,15 +259,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     }
   }
 
-  void _pttMute() {
-    if (_pttMuted) {
-      call!.unmute(true, false);
-    } else {
-      call!.mute(true, false);
-    }
-  }
-
-
 
   void _muteVideo() {
     if (_videoMuted) {
@@ -340,6 +320,25 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     call!.sendDTMF(tone);
   }
 
+
+  void _pttOpen() {
+
+    isButtonColor = true ;
+    buttonColor = Colors.green ;
+    //   _muteAudio();
+    call!.unmute(true, false);
+
+  }
+
+  void _pttClose() {
+
+    isButtonColor = false ;
+    buttonColor = Color(0xFFe4002b) ;
+    call!.mute(true,false);
+
+  }
+
+
   void _handleKeyPad() {
     setState(() {
       _showNumPad = !_showNumPad;
@@ -396,7 +395,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
   }
 
 
-
   Widget _buildActionButtons() {
     var hangupBtn = ActionButton(
       title: "hangup",
@@ -437,46 +435,22 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
 
 
           advanceActions.add(GestureDetector(
-
              onLongPress: () {
-                setState(() {
-          isButtonColor = true ;
-          buttonColor = Colors.green ;
-
-
-          _pttMute();
-
-
-
-        });
-
+               if(int.parse(remoteIdentity!) >= 9000) {
+                 _pttOpen() ;
+               }
 
         },
-
         onLongPressEnd: (_) {
-               setState(() {
-                 isButtonColor = false ;
-                 buttonColor = Color(0xFFe4002b) ;
-
-               });
+               if(int.parse(remoteIdentity!) >= 9000) {
+                 _pttClose() ;
+               }
         },
-
             child: ActionButton(
-
-
               title: "ptt",
               icon: Icons.mic_none ,
-             // int.parse(remoteIdentity!) >= 9000  ?  Icons.mic_none : Icons.mic_off ,
               checked: _pttMuted,
-             // onPressed: int.parse(remoteIdentity!) >= 9000  ? _pttMute : null ,
-
-
-
-
-
-              fillColor: buttonColor
-       // int.parse(remoteIdentity!) >= 9000 ?  Color(0xFFe4002b) : Color(0xFF5a5acaf)
-
+              fillColor: int.parse(remoteIdentity!)  >=9000 ? buttonColor : Color(0xFF5a5acaf)
             ),
           ));
 
