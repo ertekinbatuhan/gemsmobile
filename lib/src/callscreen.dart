@@ -30,8 +30,7 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
   MediaStream? _remoteStream;
   bool isButtonPressed = false ;
   late SharedPreferences _preferences;
-
- String? getSharedAuthUser ;
+  String? getSharedAuthUser ;
 
 
   void loadSharedData()  async {
@@ -497,9 +496,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
               ));
             }
 
-
-
-
           if(int.parse(remoteIdentity!) >= 9000 || int.parse(getSharedAuthUser!) >= 9000 ) {
 
             advanceActions.add(
@@ -534,20 +530,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
             );
 
           }
-        /*  advanceActions.add(Visibility(
-            child: ActionButton(
-
-              title: _audioMuted ? 'unmute' : 'mute',
-              icon: _audioMuted ? Icons.mic_off : Icons.mic,
-              checked: _audioMuted,
-              onPressed: () => _muteAudio(),
-              fillColor: Color(0xFFe4002b),
-
-            ),
-          ));
-
-         */
-
           if (voiceOnly) {
             advanceActions.add(ActionButton(
               title: _speakerOn ? 'speaker off' : 'speaker on',
