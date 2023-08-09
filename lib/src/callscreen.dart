@@ -30,20 +30,18 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
   MediaStream? _remoteStream;
   bool isButtonPressed = false ;
   late SharedPreferences _preferences;
-  
- String? testData ;
 
-  void loadShared()  async {
+ String? getSharedAuthUser ;
+
+
+  void loadSharedData()  async {
     _preferences =  await  SharedPreferences.getInstance()  ;
-     testData = _preferences.getString('auth_user') ;
-    if(int.parse( remoteIdentity!) >= 9000 || int.parse(testData!) >= 9000) {
+     getSharedAuthUser = _preferences.getString('auth_user') ;
+    if(int.parse( remoteIdentity!) >= 9000 || int.parse(getSharedAuthUser!) >= 9000) {
       _pttClose() ;
 
 
-
     }
-   print(testData) ;
-
   }
 
   bool _showNumPad = false;
@@ -51,13 +49,13 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
   late Timer _timer;
   bool _audioMuted = false;
   bool _pttMuted = false ;
-
   bool _videoMuted = false;
   bool _speakerOn = false;
   bool _hold = false;
   String? _holdOriginator;
   CallStateEnum _state = CallStateEnum.NONE;
   SIPUAHelper? get helper => widget._helper;
+
 
   bool get voiceOnly =>
       (_localStream == null || _localStream!.getVideoTracks().isEmpty) &&
@@ -68,11 +66,8 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
 
   bool isButtonColor = false;
   Color buttonColor = Color(0xFFe4002b); // Başlangıç rengi
-
   String get direction => call!.direction;
-
   Call? get call => widget._call;
-
 
   @override
   initState() {
@@ -80,10 +75,9 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     _initRenderers();
     helper!.addSipUaHelperListener(this);
     _startTimer();
-    loadShared() ;
-    //_pttClose() ;
-  }
+    loadSharedData() ;
 
+  }
 
   @override
   deactivate() {
@@ -279,7 +273,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     }
   }
 
-
   void _muteVideo() {
     if (_videoMuted) {
       call!.unmute(false, true);
@@ -346,7 +339,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     buttonColor = Colors.green ;
     //   _muteAudio();
     call!.unmute(true, false);
-
   }
 
   void _pttClose() {
@@ -431,6 +423,7 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     var basicActions = <Widget>[];
     var advanceActions = <Widget>[];
 
+
     switch (_state) {
       case CallStateEnum.NONE:
       case CallStateEnum.CONNECTING:
@@ -451,61 +444,99 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
         {
 
 
-          advanceActions.add(GestureDetector(
-             onLongPress: () {
+          if((int.parse(remoteIdentity!) >= 9000 ||
+              int.parse(getSharedAuthUser!) >= 9000)) {
 
-               if(int.parse(remoteIdentity!) >= 9000 || int.parse(testData!) >= 9000 ){
-                 _pttOpen();
-               }
+            advanceActions.add(GestureDetector(
+              onLongPress: () {
+                if (int.parse(remoteIdentity!) >= 9000 ||
+                    int.parse(getSharedAuthUser!) >= 9000) {
+                  _pttOpen();
+                }
+              },
+              onLongPressEnd: (_) {
+                if (int.parse(remoteIdentity!) >= 9000 ||
+                    int.parse(getSharedAuthUser!) >= 9000) {
+                  _pttClose();
+                }
+              },
+              child: Visibility(
+                visible: true,
+                child: ActionButton(
+                    title: "ptt",
+                    icon: Icons.mic_none,
+                    checked: _pttMuted,
 
-        },
-        onLongPressEnd: (_) {
-
-               if(int.parse(remoteIdentity!) >= 9000 || int.parse(testData!) >= 9000 ) {
-                 _pttClose() ;
-               }
-        },
-            child: ActionButton(
-              title: "ptt",
-              icon: Icons.mic_none ,
-              checked: _pttMuted,
-
-              fillColor: int.parse(remoteIdentity!)  >=9000  || int.parse(testData!) >= 9000 ? buttonColor : Color(0xFF5a5acaf)
-            ),
-          ));
-
-
-          if (voiceOnly) {
-            advanceActions.add(SizedBox(
-              child: ActionButton(
-                title: "keypad",
-                icon: Icons.dialpad,
-                onPressed: () {
-
-
-
-                  _handleKeyPad();
-                  loadShared() ;
-
-        },
-
-
-              //  => _handleKeyPad(),
-                fillColor: Color(0xFFe4002b),
+                    fillColor: int.parse(remoteIdentity!) >= 9000 ||
+                        int.parse(getSharedAuthUser!) >= 9000
+                        ? buttonColor
+                        : Color(0xFF5a5acaf)
+                ),
               ),
             ));
-          } else {
-            advanceActions.add(ActionButton(
-              title: "switch camera",
-              icon: Icons.switch_video,
-              onPressed: () => _switchCamera(),
-              fillColor: Color(0xFFe4002b),
-            ));
           }
-          advanceActions.add(SizedBox(
 
-            width: 60,
+
+            if (voiceOnly) {
+              advanceActions.add(SizedBox(
+                child: ActionButton(
+                  title: "keypad",
+                  icon: Icons.dialpad,
+                  onPressed: () {
+                    _handleKeyPad();
+                  },
+                  fillColor: Color(0xFFe4002b),
+                ),
+              ));
+            } else {
+              advanceActions.add(ActionButton(
+                title: "switch camera",
+                icon: Icons.switch_video,
+                onPressed: () => _switchCamera(),
+                fillColor: Color(0xFFe4002b),
+              ));
+            }
+
+
+
+
+          if(int.parse(remoteIdentity!) >= 9000 || int.parse(getSharedAuthUser!) >= 9000 ) {
+
+            advanceActions.add(
+              Visibility(
+                visible: false,
+                child: ActionButton(
+
+                  title: _audioMuted ? 'unmute' : 'mute',
+                  icon: _audioMuted ? Icons.mic_off : Icons.mic,
+                  checked: _audioMuted,
+                  onPressed: () => _muteAudio(),
+                  fillColor: Color(0xFFe4002b),
+                ),
+              )
+            );
+
+          }
+          else {
+
+            advanceActions.add(
+              Visibility(
+                visible: true,
+                child: ActionButton(
+                  title: _audioMuted ? 'unmute' : 'mute',
+                  icon: _audioMuted ? Icons.mic_off : Icons.mic,
+                  checked: _audioMuted,
+                  onPressed: () => _muteAudio(),
+                  fillColor: Color(0xFFe4002b),
+
+                ),
+              )
+            );
+
+          }
+        /*  advanceActions.add(Visibility(
             child: ActionButton(
+
               title: _audioMuted ? 'unmute' : 'mute',
               icon: _audioMuted ? Icons.mic_off : Icons.mic,
               checked: _audioMuted,
@@ -515,6 +546,7 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
             ),
           ));
 
+         */
 
           if (voiceOnly) {
             advanceActions.add(ActionButton(
@@ -530,7 +562,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
               icon: _videoMuted ? Icons.videocam : Icons.videocam_off,
               checked: _videoMuted,
               fillColor: Color(0xFFe4002b),
-
               onPressed: () => _muteVideo(),
             ));
           }
@@ -554,7 +585,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
             ));
           } else {
             basicActions.add(ActionButton(
-
               title: "transfer",
               icon: Icons.phone_forwarded,
               onPressed: () => _handleTransfer(),
@@ -582,12 +612,9 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
       actionWidgets.addAll(_buildNumPad());
     } else {
       if (advanceActions.isNotEmpty) {
-        actionWidgets.add(FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: advanceActions),
-        ));
+        actionWidgets.add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: advanceActions));
       }
     }
 

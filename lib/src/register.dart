@@ -13,9 +13,6 @@ class RegisterWidget extends StatefulWidget {
 
 class _MyRegisterWidget extends State<RegisterWidget>
     implements SipUaHelperListener {
-
-
-
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _wsUriController = TextEditingController();
   final TextEditingController _sipUriController = TextEditingController();
