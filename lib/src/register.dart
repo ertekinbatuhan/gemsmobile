@@ -49,7 +49,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
       _wsUriController.text =
           _preferences.getString('ws_uri') ?? 'ws://192.168.22.5:5066';
       _sipUriController.text =
-          _preferences.getString('sip_uri') ?? '2005@192.168.22.5';
+          _preferences.getString('sip_uri') ?? '@192.168.22.5';
       _displayNameController.text =
           _preferences.getString('display_name') ?? 'Leonardo GEMS Mobile';
       _passwordController.text = _preferences.getString('password') ?? '';
@@ -113,6 +113,8 @@ class _MyRegisterWidget extends State<RegisterWidget>
     settings.webSocketSettings.extraHeaders = _wsExtraHeaders;
     settings.webSocketSettings.allowBadCertificate = true;
     //settings.webSocketSettings.userAgent = 'Dart/2.8 (dart:io) for OpenSIPS.';
+
+
 
     settings.uri = _sipUriController.text;
     settings.authorizationUser = _authorizationUserController.text;
@@ -181,7 +183,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                       Padding(
                         padding: const EdgeInsets.fromLTRB(48.0, 0.0, 48.0, 0),
                         child: TextFormField(
-                          controller: _sipUriController,
+                          controller: _sipUriController ,
                           keyboardType: TextInputType.text,
                           textAlign: TextAlign.center,
                           decoration: const InputDecoration(
@@ -207,6 +209,9 @@ class _MyRegisterWidget extends State<RegisterWidget>
                         child: TextFormField(
                           controller: _authorizationUserController,
                           keyboardType: TextInputType.text,
+                          onChanged: (text) {
+                            _sipUriController.text = text + "@192.168.22.5" ;
+                          },
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(10.0),
@@ -234,6 +239,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                         child: TextFormField(
                           controller: _passwordController,
                           keyboardType: TextInputType.text,
+                          obscureText: true,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(10.0),
@@ -262,6 +268,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                           controller: _displayNameController,
                           keyboardType: TextInputType.text,
                           textAlign: TextAlign.center,
+                          readOnly: true,
                           decoration: const InputDecoration(
                             contentPadding: EdgeInsets.all(10.0),
                             border: UnderlineInputBorder(

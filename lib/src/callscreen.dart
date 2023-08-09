@@ -1,19 +1,15 @@
 import 'dart:async';
 import 'dart:ffi';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sip_ua/sip_ua.dart';
-
 import 'widgets/action_button.dart';
 
 class CallScreenWidget extends StatefulWidget {
   final SIPUAHelper? _helper;
   final Call? _call;
-
-
   CallScreenWidget(this._helper, this._call, {Key? key}) : super(key: key);
   @override
   _MyCallScreenWidget createState() => _MyCallScreenWidget();
@@ -32,13 +28,11 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
   late SharedPreferences _preferences;
   String? getSharedAuthUser ;
 
-
   void loadSharedData()  async {
     _preferences =  await  SharedPreferences.getInstance()  ;
      getSharedAuthUser = _preferences.getString('auth_user') ;
     if(int.parse( remoteIdentity!) >= 9000 || int.parse(getSharedAuthUser!) >= 9000) {
       _pttClose() ;
-
 
     }
   }
@@ -64,7 +58,7 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
 
 
   bool isButtonColor = false;
-  Color buttonColor = Color(0xFFe4002b); // Başlangıç rengi
+  Color buttonColor = Color(0xFFe4002b);
   String get direction => call!.direction;
   Call? get call => widget._call;
 
