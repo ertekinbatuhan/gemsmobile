@@ -153,7 +153,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                         padding: EdgeInsets.fromLTRB(48.0, 18.0, 48.0, 0),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('WebSocket:'),
+                          child: Text('Domain:'),
                         ),
                       ),
 
@@ -286,7 +286,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                     ],
                   ),
                   Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 18.0, 0.0, 0.0),
+                      padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
                       child: Container(
                         height: 48.0,
                         width: 200.0,
