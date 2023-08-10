@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gemsmobile/src/callscreen.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +29,9 @@ class _MyRegisterWidget extends State<RegisterWidget>
 
   SIPUAHelper? get helper => widget._helper;
 
+  String? ipAdress ;
+
+
   @override
   initState() {
     super.initState();
@@ -46,10 +50,10 @@ class _MyRegisterWidget extends State<RegisterWidget>
   void _loadSettings() async {
     _preferences = await SharedPreferences.getInstance();
     setState(() {
-      _wsUriController.text =
-          _preferences.getString('ws_uri') ?? 'ws://192.168.22.5:5066';
+      _wsUriController.text =      // "ws://192.168.22.5:5056"
+          _preferences.getString('ws_uri') ?? '192.168.22.5';
       _sipUriController.text =
-          _preferences.getString('sip_uri') ?? '@192.168.22.5';
+          _preferences.getString('sip_uri') ?? '';
       _displayNameController.text =
           _preferences.getString('display_name') ?? 'Leonardo GEMS Mobile';
       _passwordController.text = _preferences.getString('password') ?? '';
@@ -106,17 +110,13 @@ class _MyRegisterWidget extends State<RegisterWidget>
       _alert(context, "SIP URI");
     }
 
-
     UaSettings settings = UaSettings();
 
-    settings.webSocketUrl = _wsUriController.text;
+    settings.webSocketUrl =  "ws://"  +  _wsUriController.text + ":5066" ;
     settings.webSocketSettings.extraHeaders = _wsExtraHeaders;
     settings.webSocketSettings.allowBadCertificate = true;
     //settings.webSocketSettings.userAgent = 'Dart/2.8 (dart:io) for OpenSIPS.';
-
-
-
-    settings.uri = _sipUriController.text;
+    settings.uri =   _authorizationUserController.text  + "@"  + _wsUriController.text;
     settings.authorizationUser = _authorizationUserController.text;
     settings.password = _passwordController.text;
     settings.displayName = _displayNameController.text;
@@ -156,6 +156,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                           child: Text('WebSocket:'),
                         ),
                       ),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(48.0, 0.0, 48.0, 0),
                         child: TextFormField(
@@ -171,7 +172,10 @@ class _MyRegisterWidget extends State<RegisterWidget>
                       ),
                     ],
                   ),
-                  Column(
+                /*
+
+                SIP URI KISMI
+                Column(
                     children: <Widget>[
                       const Padding(
                         padding: EdgeInsets.fromLTRB(46.0, 18.0, 48.0, 0),
@@ -186,6 +190,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                           controller: _sipUriController ,
                           keyboardType: TextInputType.text,
                           textAlign: TextAlign.center,
+
                           decoration: const InputDecoration(
                             contentPadding: EdgeInsets.all(10.0),
                             border: UnderlineInputBorder(
@@ -195,6 +200,8 @@ class _MyRegisterWidget extends State<RegisterWidget>
                       ),
                     ],
                   ),
+
+                 */
                   Column(
                     children: <Widget>[
                       const Padding(
@@ -207,10 +214,10 @@ class _MyRegisterWidget extends State<RegisterWidget>
                       Padding(
                         padding: const EdgeInsets.fromLTRB(48.0, 0.0, 48.0, 0),
                         child: TextFormField(
-                          controller: _authorizationUserController,
+                          controller: _authorizationUserController  ,
                           keyboardType: TextInputType.text,
                           onChanged: (text) {
-                            _sipUriController.text = text + "@192.168.22.5" ;
+                           _displayNameController.text = text  ;
                           },
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
@@ -268,7 +275,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                           controller: _displayNameController,
                           keyboardType: TextInputType.text,
                           textAlign: TextAlign.center,
-                          readOnly: true,
+                         // readOnly: true,
                           decoration: const InputDecoration(
                             contentPadding: EdgeInsets.all(10.0),
                             border: UnderlineInputBorder(
