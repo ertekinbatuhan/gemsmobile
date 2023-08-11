@@ -49,14 +49,11 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
   CallStateEnum _state = CallStateEnum.NONE;
   SIPUAHelper? get helper => widget._helper;
 
-
   bool get voiceOnly =>
       (_localStream == null || _localStream!.getVideoTracks().isEmpty) &&
       (_remoteStream == null || _remoteStream!.getVideoTracks().isEmpty);
 
   String? get remoteIdentity => call!.remote_identity;
-
-
   bool isButtonColor = false;
   Color buttonColor = Color(0xFFe4002b);
   String get direction => call!.direction;
@@ -232,7 +229,7 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     bool remoteHasVideo = call!.remote_has_video;
     final mediaConstraints = <String, dynamic>{
       'audio': true,
-      'video': remoteHasVideo
+      'video': remoteHasVideo    // false  // changed
     };
     MediaStream mediaStream;
 
@@ -251,6 +248,35 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     call!.answer(helper!.buildCallOptions(!remoteHasVideo),
         mediaStream: mediaStream);
   }
+
+  void _handleCameraAccept() async {
+    bool remoteHasVideo = call!.remote_has_video;
+    final mediaConstraints = <String, dynamic>{
+      'audio': true,
+      'video': remoteHasVideo    // false  // changed
+    };
+    MediaStream mediaStream;
+
+    if (kIsWeb && remoteHasVideo) {
+      mediaStream =
+      await navigator.mediaDevices.getDisplayMedia(mediaConstraints);
+      mediaConstraints['video'] = false;
+      MediaStream userStream =
+      await navigator.mediaDevices.getUserMedia(mediaConstraints);
+      mediaStream.addTrack(userStream.getAudioTracks()[0], addToNative: true);
+    } else {
+      mediaConstraints['video'] = remoteHasVideo;
+      mediaStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
+    }
+
+    call!.answer(helper!.buildCallOptions(!remoteHasVideo),
+        mediaStream: mediaStream);
+  }
+
+
+
+
+
 
   void _switchCamera() {
     if (_localStream != null) {
@@ -416,7 +442,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     var basicActions = <Widget>[];
     var advanceActions = <Widget>[];
 
-
     switch (_state) {
       case CallStateEnum.NONE:
       case CallStateEnum.CONNECTING:
@@ -427,16 +452,27 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
             icon: Icons.phone,
             onPressed: () => _handleAccept(),
           ));
+
+
           basicActions.add(hangupBtn);
         } else {
           basicActions.add(hangupBtn);
         }
+
+        if (direction == 'INCOMING') {
+          basicActions.add(ActionButton(
+            title: "Camera",
+            fillColor: Colors.green,
+            icon: Icons.video_camera_back,
+            onPressed: () => _handleCameraAccept(),
+          ));
+        }
+
         break;
       case CallStateEnum.ACCEPTED:
       case CallStateEnum.CONFIRMED:
+
         {
-
-
           if((int.parse(remoteIdentity!) >= 9000 ||
               int.parse(getSharedAuthUser!) >= 9000)) {
 
@@ -468,7 +504,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
               ),
             ));
           }
-
 
             if (voiceOnly) {
               advanceActions.add(SizedBox(
@@ -527,7 +562,7 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
           if (voiceOnly) {
             advanceActions.add(ActionButton(
               title: _speakerOn ? 'speaker off' : 'speaker on',
-              icon: _speakerOn ? Icons.volume_off : Icons.volume_up,
+              icon: _speakerOn ? Icons.volume_up : Icons.volume_off,
               checked: _speakerOn,
               onPressed: () => _toggleSpeaker(),
               fillColor: Color(0xFFe4002b),

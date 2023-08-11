@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:sip_ua/sip_ua.dart';
-
 import 'src/about.dart';
 import 'src/callscreen.dart';
 import 'src/dialpad.dart';
@@ -46,7 +45,6 @@ class MyApp extends StatelessWidget {
       900: Color(0xFFB71C1C),
     },
   );
-
 
   Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     final String? name = settings.name;

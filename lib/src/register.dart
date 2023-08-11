@@ -112,7 +112,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
 
     UaSettings settings = UaSettings();
 
-    settings.webSocketUrl =  "ws://"  +  _wsUriController.text + ":5066" ;
+    settings.webSocketUrl =  "ws://"  +  _wsUriController.text  ;   //  ":5066" ;
     settings.webSocketSettings.extraHeaders = _wsExtraHeaders;
     settings.webSocketSettings.allowBadCertificate = true;
     //settings.webSocketSettings.userAgent = 'Dart/2.8 (dart:io) for OpenSIPS.';
@@ -153,7 +153,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                         padding: EdgeInsets.fromLTRB(48.0, 18.0, 48.0, 0),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Domain:'),
+                          child: Text('SIP SERVER IP:'),
                         ),
                       ),
 
@@ -173,7 +173,6 @@ class _MyRegisterWidget extends State<RegisterWidget>
                     ],
                   ),
                 /*
-
                 SIP URI KISMI
                 Column(
                     children: <Widget>[
@@ -208,7 +207,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                         padding: EdgeInsets.fromLTRB(46.0, 18.0, 48.0, 0),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Authorization User:'),
+                          child: Text('User Name:'),
                         ),
                       ),
                       Padding(
@@ -289,7 +288,7 @@ class _MyRegisterWidget extends State<RegisterWidget>
                       padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
                       child: Container(
                         height: 48.0,
-                        width: 200.0,
+                        width: 250.0,
                         child: MaterialButton(
                           color: Color(0xFFe4002b),
                           shape: RoundedRectangleBorder(
